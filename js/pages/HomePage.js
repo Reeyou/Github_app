@@ -1,17 +1,16 @@
-import React,{Component} from 'react'
+import React, { Component } from 'react'
 import {
   StyleSheet,
   Text,
   View
 } from 'react-native'
+import TabNavigator from '../navigators/TabNavigators'
 
 export default class HomePage extends Component {
-  
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text>HomePage</Text>
-      </View>
+      <TabNavigator />
     )
   }
 }
