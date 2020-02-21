@@ -15,9 +15,10 @@ export default class NavigationUtil {
    * @param {*} params 参数
    */
   static goPage(page,params = {}) {
-    const {navigation} = NavigationUtil.navigation
+    const navigation = NavigationUtil.navigation
     if(!navigation) {
       console.log('navigation can not be null')
+      return
     }
     navigation.navigate(page,{...params})
   }

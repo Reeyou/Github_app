@@ -8,7 +8,9 @@ import TabNavigator from '../navigators/TabNavigators'
 import NavigationUtil from '../navigators/NavigationUtil'
 
 export default class HomePage extends Component {
-
+  constructor(props) {
+    super(props)
+  }
   render() {
     // FIX TabNavigator导航页无法跳转到外部导航页问题
     NavigationUtil.navigation = this.props.navigation

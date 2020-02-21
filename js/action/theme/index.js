@@ -1,7 +1,7 @@
-import types from '../types'
-export default function onThemeChange(theme) {
+import TYPES from '../TYPES'
+export function onThemeChange(theme) {
   return {
-    type: types.THEME_CHANGE,
+    type: TYPES.THEME_CHANGE,
     theme
   }
 }

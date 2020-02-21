@@ -11,24 +11,24 @@ import NavigationUtil from '../navigators/NavigationUtil';
 export default class PopularPage extends Component {
   constructor(props) {
     super(props)
-    this.navList = ['Java','Javascript','nodejs','React','Vue','ReactNative',]
+    this.tabList = ['Java','Javascript','nodejs','React','Vue','ReactNative',]
   }
-  _getNavs() {
-    const navs = {}
-    this.navList.forEach((item,index) => {
-      navs[`nav${index}`] = {
+  _getTabs() {
+    const tabs = {}
+    this.tabList.forEach((item,index) => {
+      tabs[`tab${index}`] = {
         screen: props => <PopularTab {...props} tabLable={item}/>,
         navigationOptions: {
           title: item
         }
       }
     })
-    return navs
+    return tabs
   }
   render() {
     const TabNavigator = createAppContainer(
       createMaterialTopTabNavigator(
-        this._getNavs(),
+        this._getTabs(),
         {
           tabBarOptions: {
             tabStyle: styles.tabStyle,
@@ -47,7 +47,7 @@ export default class PopularPage extends Component {
       )
     )
     return (
-      <View style={styles.container}>
+      <View style={styles.tab}>
         <TabNavigator />
       </View>
     )
@@ -58,14 +58,20 @@ class PopularTab extends Component {
     return (
       <View style={styles.container}>
         <Text>Tab</Text>
-        <Text onPress={() => NavigationUtil.goPage('DetailPage')}>跳转到详情页</Text>
+        <Text onPress={() => NavigationUtil.goPage('DetailPage',{navigation: this.props.navigation})}>跳转到详情页</Text>
+        <Text onPress={() => NavigationUtil.goPage('FetchPage',{navigation: this.props.navigation})}>Fetch使用</Text>
       </View>
     )
   }
 }
 const styles = StyleSheet.create({
-  container: {
+  tab: {
     flex: 1,
+  },
+  container: {
+   flex: 1,
+   justifyContent: 'center',
+   alignItems: 'center'
   },
   tabStyle: {
     minWidth: 50

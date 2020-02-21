@@ -1,11 +1,11 @@
-import Types from '../../action/types'
+import Types from '../../action/TYPES'
 
 const defaultState = {
   theme: 'red'
 } 
 
 export default function onAction(state = defaultState, action) {
-  switch(action.types) {
+  switch(action.type) {
     case Types.THEME_CHANGE:
       return {
         ...state,

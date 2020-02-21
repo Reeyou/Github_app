@@ -3,6 +3,7 @@ import {createStackNavigator} from 'react-navigation-stack'
 import HomePage from '../pages/HomePage'
 import WelcomePage from '../pages/WelcomePage'
 import DetailPage from '../pages/DetailPage'
+import FetchPage from '../pages/FetchPage'
 
 const InitNavigator = createStackNavigator(
   {
@@ -25,9 +26,11 @@ const MainNavigator = createStackNavigator(
     },
     DetailPage: {
       screen: DetailPage,
-      navigationOptions: {
-        header: null
-      }
+      
+    },
+    FetchPage: {
+      screen: FetchPage,
+      
     }
   }
 )
