@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { createAppContainer } from 'react-navigation'
-import { createBottomTabNavigator } from 'react-navigation-tabs'
+import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs'
 import PopularPage from '../pages/PopularPage'
 import TrendingPage from '../pages/TrendingPage'
 import FavoritePage from '../pages/FavoritePage'
@@ -8,28 +8,7 @@ import UserPage from '../pages/UserPage'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-
-export default class TabNavigators extends Component {
-  constructor(props) {
-    super(props)
-    console.disableYellowBox = true; // 关闭黄色警告框
-  }
-
-  _tabNavigator() {
-    const { PopularPage, TrendingPage, FavoritePage, UserPage } = TABS
-
-    // 动态修改TABS属性
-    PopularPage.navigationOptions.tabBarLabel = '最热1'
-    return createAppContainer(
-      createBottomTabNavigator(TABS)
-    )
-  }
-
-  render() {
-    const TAB = this._tabNavigator()
-    return <TAB />
-  }
-}
+import { connect } from 'react-redux'
 
 const TABS =
 {
@@ -86,3 +65,55 @@ const TABS =
     }
   },
 }
+class TabNavigators extends Component {
+  constructor(props) {
+    super(props)
+    console.disableYellowBox = true; // 关闭黄色警告框
+  }
+
+  _tabNavigator() {
+    if(this.Tabs) {
+      return this.Tabs
+    }
+
+    const { PopularPage, TrendingPage, FavoritePage, UserPage } = TABS
+
+    // 动态修改TABS属性
+    PopularPage.navigationOptions.tabBarLabel = '最热1'
+    return this.Tabs = createAppContainer(
+      createBottomTabNavigator(
+        TABS,
+        {
+          tabBarComponent: props => {
+            return <TabBarComponent {...props} theme={this.props.theme}/>
+          }
+        }
+      )
+    )
+  }
+
+  render() {
+    const TAB = this._tabNavigator()
+    return <TAB />
+  }
+}
+
+class TabBarComponent extends Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    return <BottomTabBar
+              {...this.props}
+              activeTintColor={this.props.theme}
+            />
+  }
+}
+
+
+
+const mapStateToProps = state => ({
+  theme: state.theme.theme
+})
+
+export default connect(mapStateToProps)(TabNavigators)
