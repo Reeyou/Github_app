@@ -79,7 +79,7 @@ class TabNavigators extends Component {
     const { PopularPage, TrendingPage, FavoritePage, UserPage } = TABS
 
     // 动态修改TABS属性
-    PopularPage.navigationOptions.tabBarLabel = '最热1'
+    PopularPage.navigationOptions.tabBarLabel = '最热'
     return this.Tabs = createAppContainer(
       createBottomTabNavigator(
         TABS,

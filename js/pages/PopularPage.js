@@ -5,16 +5,18 @@ import {
   View,
   FlatList,
   RefreshControl,
-  ActivityIndicator
+  ActivityIndicator,
+  DeviceInfo
 } from 'react-native'
 import { createAppContainer } from 'react-navigation'
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs'
-import NavigationUtil from '../navigators/NavigationUtil';
 import { connect } from 'react-redux'
 import actions from '../action/index'
-import PopularItem from '../common/PopularItem'
+import PopularItem from '../component/PopularItem'
+import NavigationBar from '../component/NavigationBar'
 import Toast from 'react-native-easy-toast'
 
+const THEME_COLOR = '#678'
 export default class PopularPage extends Component {
   constructor(props) {
     super(props)
@@ -33,6 +35,15 @@ export default class PopularPage extends Component {
     return tabs
   }
   render() {
+    let statuBar = {
+      backgroundColor: THEME_COLOR,
+      barStyle: 'light-content'
+    }
+    let navigationBar = <NavigationBar
+      title='最热'
+      statuBar={statuBar}
+      style={{backgroundColor: THEME_COLOR}}
+    />
     const TabNavigator = createAppContainer(
       createMaterialTopTabNavigator(
         this._getTabs(),
@@ -42,7 +53,8 @@ export default class PopularPage extends Component {
             upperCaseLabel: false,
             scrollEnabled: true,
             style: {
-              backgroundColor: '#a67'
+              backgroundColor: '#a67',
+              height: 50
             },
             indicatorStyle: {
               height: 2,
@@ -55,6 +67,7 @@ export default class PopularPage extends Component {
     )
     return (
       <View style={styles.tab}>
+        {navigationBar}
         <TabNavigator />
       </View>
     )
@@ -68,7 +81,7 @@ class PopularTab extends Component {
     this.storeName = tabLable
   }
   componentDidMount() {
-    this.loadData()
+    // this.loadData()
   }
   loadData(loadMore) {
     const { onLoadPopularData, onLoadPopularMoreData } = this.props
@@ -174,6 +187,7 @@ const PopularTabPage = connect(mapStateToProps, mapDispatchToProps)(PopularTab)
 const styles = StyleSheet.create({
   tab: {
     flex: 1,
+    marginTop: DeviceInfo.isIphoneX_deprecated? 30: 0
   },
   container: {
     flex: 1,
@@ -181,12 +195,14 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   tabStyle: {
-    minWidth: 50
+    // minWidth: 50
+    padding: 0
   },
   labelStyle: {
     fontSize: 13,
-    marginTop: 6,
-    marginBottom: 6
+    margin: 0
+    // marginTop: 6,
+    // marginBottom: 6
   },
   indicatorContainer: {
     alignItems: 'center'
