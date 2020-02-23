@@ -18,6 +18,7 @@ import NavigationBar from '../component/NavigationBar'
 import Toast from 'react-native-easy-toast'
 import TrendingDialog, { TimeSpans } from '../component/TrendingDialog'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import NavigationUtil from '../navigators/NavigationUtil';
 
 const THEME_COLOR = '#678'
 const TIME_SPAN_CHANGE = 'TIME_SPAN_CHANGE'
@@ -183,7 +184,7 @@ class TrendingTab extends Component {
     return <TrendingItem
       item={item}
       onSelect={() => {
-
+        NavigationUtil.goPage('DetailPage',{projectModes: item})
       }}
     />
   }
