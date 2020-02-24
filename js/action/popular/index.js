@@ -1,13 +1,13 @@
 import TYPES from '../TYPES'
 import DataStore,{FLAG} from '../../api/DataStore'
-import {handleData} from '../actionUtil'
+import {handleData, _projectModals} from '../actionUtil'
 
 /**
  * 获取最热数据的异步action
  * @param {*} storeName 
  * @param {*} url 
  */
-export function onLoadPopularData(storeName, url, pageSize) {
+export function onLoadPopularData(storeName, url, pageSize, favoriteDao) {
   return dispatch => {
     dispatch({
       type: TYPES.POPULAR_REFRESH,
@@ -16,7 +16,7 @@ export function onLoadPopularData(storeName, url, pageSize) {
     let dataStore = new DataStore()
     dataStore.fetchData(url,FLAG.flag_popular)
       .then(data => {
-        handleData(TYPES.POPULAR_REFRESH_SUCCESS,dispatch, storeName, data, pageSize)
+        handleData(TYPES.POPULAR_REFRESH_SUCCESS,dispatch, storeName, data, pageSize,favoriteDao)
         console.log(data)
       })
       .catch(err => {
@@ -37,7 +37,7 @@ export function onLoadPopularData(storeName, url, pageSize) {
  * @param {*} dataArray 
  * @param {*} callback 
  */
-export function onLoadPopularMoreData(storeName, pageIndex, pageSize, dataArray = [], callback) {
+export function onLoadPopularMoreData(storeName, pageIndex, pageSize, dataArray = [], favoriteDao, callback) {
   return dispatch => {
     setTimeout(() => {
       if ((pageIndex - 1) * pageSize >= dataArray.length) {
@@ -48,17 +48,19 @@ export function onLoadPopularMoreData(storeName, pageIndex, pageSize, dataArray 
           type: TYPES.POPULAR_LOAD_MORE_FAIL,
           error: 'no more',
           storeName,
-          pageIndex: --pageIndex,
-          projectModes: dataArray
+          pageIndex: --pageIndex
         })
       } else {
         let max = pageSize * pageIndex > dataArray.length ? dataArray.length : pageSize * pageIndex
-        dispatch({
-          type: TYPES.POPULAR_LOAD_MORE_SUCCESS,
-          storeName,
-          pageIndex,
-          projectModes: dataArray.slice(0, max)
+        _projectModals(dataArray.slice(0,max),favoriteDao,data=> {
+          dispatch({
+            type: TYPES.POPULAR_LOAD_MORE_SUCCESS,
+            storeName,
+            pageIndex,
+            projectModes: data
+          })
         })
+        
       }
     }, 1000)
   }
