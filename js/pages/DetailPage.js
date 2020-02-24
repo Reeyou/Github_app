@@ -10,6 +10,8 @@ import NavigationBar from '../component/NavigationBar'
 import ViewUtil from '../utils/ViewUtil';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import NavigationUtil from '../navigators/NavigationUtil'
+import ProjectModal from '../modal/projectModal';
+import FavoriteDao from '../api/FavoriteDao'
 
 const TRENDING_URL = 'https://github.com/'
 const THEME_COLOR = '#678'
@@ -18,13 +20,15 @@ export default class DetailPage extends Component {
     super(props)
     this.params = this.props.navigation.state.params
     console.log(this.params)
-    const {projectModes} = this.params
-    this.url = projectModes.html_url || TRENDING_URL+projectModes.fullName
-    const titile = projectModes.full_name || projectModes.fullName
+    const {projectModes, flag} = this.params
+    this.url = projectModes.item.html_url || TRENDING_URL+projectModes.item.fullName
+    const titile = projectModes.item.full_name || projectModes.item.fullName
+    this.favoriteDao = new FavoriteDao(flag)
     this.state={
       title: titile,
       url: this.url,
-      canGoBack: false
+      canGoBack: false,
+      isFavorite: projectModes.isFavorite
     }
   }
   goBack() {
@@ -34,15 +38,30 @@ export default class DetailPage extends Component {
       NavigationUtil.goBack(this.props.navigation)
     }
   }
+  onFavoriteClick() {
+    const {projectModes,callback} = this.params
+    const isFavorite = projectModes.isFavorite = !projectModes.isFavorite
+    callback(isFavorite)
+    this.setState({
+      isFavorite: isFavorite
+    })
+    let keys = project.item.fullName ? project.item.fullName :project.item.id.toString()
+    if(ProjectModal.isFavorite) {
+      this.favoriteDao.saveFavoriteItem(key,JSON.stringify(projectModes.item))
+    } else {
+      this.favoriteDao.removeFavoriteItem(key)
+    }
+
+  }
   renderRightButton() {
     return <View>
       <TouchableOpacity
         onPress={() => {
-
+          this.onFavoriteClick()
         }}
       >
         <FontAwesome
-          name={'star-o'}
+          name={this.state.isFavorite ? 'star' : 'star-o'}
           size={20}
           style={{color: 'white',marginRight: 10}}
         />

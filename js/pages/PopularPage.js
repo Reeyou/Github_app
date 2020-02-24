@@ -77,6 +77,7 @@ export default class PopularPage extends Component {
     )
   }
 }
+
 const pageSize = 10
 class PopularTab extends Component {
   constructor(props) {
@@ -124,8 +125,8 @@ class PopularTab extends Component {
     const item = data.item
     return <PopularItem
       projectModal={item}
-      onSelect={() => {
-        NavigationUtil.goPage('DetailPage',{projectModes: item})
+      onSelect={(callback) => {
+        NavigationUtil.goPage('DetailPage',{projectModes: item,falg: FLAG_STORAGE.flag_popular},callback)
       }}
       onFavorite={(item,isFavorite) => {
         FavoriteUtil.onFavorite(favoriteDao,item,isFavorite,FLAG_STORAGE.flag_popular)

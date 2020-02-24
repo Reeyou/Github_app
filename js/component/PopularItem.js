@@ -20,7 +20,7 @@ export default class PopularItem extends BaseItem {
 
     return (
       <TouchableOpacity
-        onPress={this.props.onSelect}
+        onPress={() => this.onItemClick()}
       >
         <View style={style.cell_container}>
           <Text style={style.title}>{item.full_name}</Text>
