@@ -1,5 +1,5 @@
 import TYPES from '../TYPES'
-import DataStore,{FLAG} from '../../api/DataStore'
+import DataStore,{FLAG_STORAGE} from '../../api/DataStore'
 import {handleData, _projectModals} from '../actionUtil'
 
 /**
@@ -14,7 +14,7 @@ export function onLoadPopularData(storeName, url, pageSize, favoriteDao) {
       storeName
     })
     let dataStore = new DataStore()
-    dataStore.fetchData(url,FLAG.flag_popular)
+    dataStore.fetchData(url,FLAG_STORAGE.flag_popular)
       .then(data => {
         handleData(TYPES.POPULAR_REFRESH_SUCCESS,dispatch, storeName, data, pageSize,favoriteDao)
         console.log(data)

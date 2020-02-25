@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import BaseItem from './BaseItem'
 import {
   StyleSheet,
   View,

@@ -58,7 +58,7 @@ export default class DataStore {
    */
   fetchNetData(url, flag) {
     return new Promise((resolve, reject) => {
-      if (flag !== FLAG.flag_trending) {
+      if (flag !== FLAG_STORAGE.flag_trending) {
         fetch(url)
         .then(res => {
           if (res.ok) {

@@ -19,7 +19,7 @@ import FavoriteDao from '../api/FavoriteDao'
 import FavoriteUtil from '../utils/favoriteUtil';
 import { FLAG_STORAGE } from '../api/DataStore';
 
-const favoriteDao = new FavoriteDao(FAVORITE_STORAGE.flag_popular)
+const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular)
 const THEME_COLOR = '#678'
 export default class PopularPage extends Component {
   constructor(props) {

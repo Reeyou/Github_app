@@ -1,5 +1,5 @@
 import TYPES from '../TYPES'
-import DataStore,{FLAG} from '../../api/DataStore'
+import DataStore,{FLAG_STORAGE} from '../../api/DataStore'
 import {handleData} from '../actionUtil'
 
 /**
@@ -14,7 +14,7 @@ export function onRefreshTrending(storeName, url, pageSize) {
       storeName
     })
     let dataStore = new DataStore()
-    dataStore.fetchData(url,FLAG.flag_trending)
+    dataStore.fetchData(url,FLAG_STORAGE.flag_trending)
       .then(data => {
         handleData(TYPES.TRENDING_REFRESH_SUCCESS,dispatch, storeName, data, pageSize)
         console.log(data)
