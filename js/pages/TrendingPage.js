@@ -19,28 +19,35 @@ import Toast from 'react-native-easy-toast'
 import TrendingDialog, { TimeSpans } from '../component/TrendingDialog'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import NavigationUtil from '../navigators/NavigationUtil';
+import ArrayUtil from '../utils/ArrayUtil';
 
 const THEME_COLOR = '#678'
 const TIME_SPAN_CHANGE = 'TIME_SPAN_CHANGE'
-export default class TrendingPage extends Component {
+class TrendingPage extends Component {
   constructor(props) {
     super(props)
-    this.tabList = ['javascript', 'nodejs', 'php', 'java']
+    const {onLoadLanguage } = this.props
+    onLoadLanguage(FLAG_LANGUAGE.flag_key)
     this.state = {
       timeSpan: TimeSpans[0]
     }
+    this.prevKeys = []
   }
   _getTabs() {
     const tabs = {}
-    this.tabList.forEach((item, index) => {
-      tabs[`tab${index}`] = {
-        screen: props => <TrendingTabPage
-          {...props}
-          timeSpan={this.state.timeSpan}
-          tabLable={item}
-        />,
-        navigationOptions: {
-          title: item
+    const {keys} = this.props
+    this.prevKeys = keys
+    keys.forEach((item, index) => {
+      if(item.checked) {
+        tabs[`tab${index}`] = {
+          screen: props => <TrendingTabPage
+            {...props}
+            timeSpan={this.state.timeSpan}
+            tabLable={item.name}
+          />,
+          navigationOptions: {
+            title: item.name
+          }
         }
       }
     })
@@ -82,7 +89,7 @@ export default class TrendingPage extends Component {
   }
 
   _tabNav() {
-    if(!this.tabNav) {
+    if(!this.tabNav || !ArrayUtil.isEqual(this.prevKeys,this.props.keys)) {
       this.tabNav = createAppContainer(
         createMaterialTopTabNavigator(
           this._getTabs(),
@@ -107,6 +114,7 @@ export default class TrendingPage extends Component {
     return this.tabNav
   }
   render() {
+    const {keys} = this.props
     let statuBar = {
       backgroundColor: THEME_COLOR,
       barStyle: 'light-content'
@@ -116,16 +124,24 @@ export default class TrendingPage extends Component {
       statuBar={statuBar}
       style={{ backgroundColor: THEME_COLOR }}
     />
-    const TabNavigator = this._tabNav()
+    const TabNavigator = keys.length > 0 ? this._tabNav() : null
     return (
       <View style={styles.tab}>
         {navigationBar}
-        <TabNavigator />
+        {TabNavigator&&<TabNavigator />}
         {this.renderTrendingDialog()}
       </View>
     )
   }
 }
+
+const mapTrendingStateToProps = state => {
+  keys: state.language.languages
+}
+const mapTrendingDispatchProps = dispatch => {
+  onLoadLanguage: flag => dispatch(actions.onLoadLanguage(flag))
+}
+export default connect(mapTrendingStateToProps, mapTrendingDispatchProps)(TrendingPage)
 const pageSize = 10
 class TrendingTab extends Component {
   constructor(props) {

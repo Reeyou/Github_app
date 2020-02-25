@@ -18,27 +18,34 @@ import Toast from 'react-native-easy-toast'
 import FavoriteDao from '../api/FavoriteDao'
 import FavoriteUtil from '../utils/favoriteUtil';
 import { FLAG_STORAGE } from '../api/DataStore';
+import { onLoadLanguage } from '../action/language';
+import { FLAG_LANGUAGE } from '../api/LanguageDao';
 
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular)
 const THEME_COLOR = '#678'
-export default class PopularPage extends Component {
+class PopularPage extends Component {
   constructor(props) {
     super(props)
-    this.tabList = ['java', 'Javascript', 'nodejs', 'React', 'Vue', 'ReactNative',]
+    const {onLoadLanguage } = this.props
+    onLoadLanguage(FLAG_LANGUAGE.flag_key)
   }
   _getTabs() {
     const tabs = {}
-    this.tabList.forEach((item, index) => {
-      tabs[`tab${index}`] = {
-        screen: props => <PopularTabPage {...props} tabLable={item} />,
-        navigationOptions: {
-          title: item
+    const {keys} = this.props
+    keys.forEach((item, index) => {
+      if(item.checked) {
+        tabs[`tab${index}`] = {
+          screen: props => <PopularTabPage {...props} tabLable={item.name} />,
+          navigationOptions: {
+            title: item.name
+          }
         }
       }
     })
     return tabs
   }
   render() {
+    const {keys} = this.props
     let statuBar = {
       backgroundColor: THEME_COLOR,
       barStyle: 'light-content'
@@ -48,7 +55,7 @@ export default class PopularPage extends Component {
       statuBar={statuBar}
       style={{backgroundColor: THEME_COLOR}}
     />
-    const TabNavigator = createAppContainer(
+    const TabNavigator = keys.length > 0 ? createAppContainer(
       createMaterialTopTabNavigator(
         this._getTabs(),
         {
@@ -68,16 +75,22 @@ export default class PopularPage extends Component {
           }
         }
       )
-    )
+    ) : null
     return (
       <View style={styles.tab}>
         {navigationBar}
-        <TabNavigator />
+        {TabNavigator&&<TabNavigator />}
       </View>
     )
   }
 }
-
+const mapPopularStateToProps = state => {
+  keys: state.language.keys
+}
+const mapPopularDispatchProps = dispatch => {
+  onLoadLanguage: flag => dispatch(actions.onLoadLanguage(flag))
+}
+export default connect(mapPopularStateToProps, mapPopularDispatchProps)(PopularPage)
 const pageSize = 10
 class PopularTab extends Component {
   constructor(props) {
