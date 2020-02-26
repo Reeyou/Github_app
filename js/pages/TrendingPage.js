@@ -20,6 +20,7 @@ import TrendingDialog, { TimeSpans } from '../component/TrendingDialog'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import NavigationUtil from '../navigators/NavigationUtil';
 import ArrayUtil from '../utils/ArrayUtil';
+import { FLAG_LANGUAGE } from '../api/LanguageDao';
 
 const THEME_COLOR = '#678'
 const TIME_SPAN_CHANGE = 'TIME_SPAN_CHANGE'
