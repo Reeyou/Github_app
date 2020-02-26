@@ -1,6 +1,6 @@
 import TYPES from '../TYPES'
 import {handleData, _projectModals} from '../actionUtil'
-import LanguageDao from "../../expand/dao/LanguageDao";
+import LanguageDao from "../../api/LanguageDao";
 
 /**
  * 加载标签

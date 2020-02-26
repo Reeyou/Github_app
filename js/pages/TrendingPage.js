@@ -135,12 +135,12 @@ class TrendingPage extends Component {
   }
 }
 
-const mapTrendingStateToProps = state => {
+const mapTrendingStateToProps = state => ({
   keys: state.language.languages
-}
-const mapTrendingDispatchProps = dispatch => {
+})
+const mapTrendingDispatchProps = dispatch => ({
   onLoadLanguage: flag => dispatch(actions.onLoadLanguage(flag))
-}
+})
 export default connect(mapTrendingStateToProps, mapTrendingDispatchProps)(TrendingPage)
 const pageSize = 10
 class TrendingTab extends Component {

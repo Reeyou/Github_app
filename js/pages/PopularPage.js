@@ -18,16 +18,17 @@ import Toast from 'react-native-easy-toast'
 import FavoriteDao from '../api/FavoriteDao'
 import FavoriteUtil from '../utils/favoriteUtil';
 import { FLAG_STORAGE } from '../api/DataStore';
-import { onLoadLanguage } from '../action/language';
 import { FLAG_LANGUAGE } from '../api/LanguageDao';
+
 
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular)
 const THEME_COLOR = '#678'
 class PopularPage extends Component {
   constructor(props) {
     super(props)
-    const {onLoadLanguage } = this.props
-    onLoadLanguage(FLAG_LANGUAGE.flag_key)
+    console.log(this.props)
+    const {loadLanguage } = this.props
+    loadLanguage(FLAG_LANGUAGE.flag_key)
   }
   _getTabs() {
     const tabs = {}
@@ -84,12 +85,12 @@ class PopularPage extends Component {
     )
   }
 }
-const mapPopularStateToProps = state => {
+const mapPopularStateToProps = state => ({
   keys: state.language.keys
-}
-const mapPopularDispatchProps = dispatch => {
-  onLoadLanguage: flag => dispatch(actions.onLoadLanguage(flag))
-}
+})
+const mapPopularDispatchProps = dispatch => ({
+  loadLanguage: flag => dispatch(actions.onLoadLanguage(flag))
+})
 export default connect(mapPopularStateToProps, mapPopularDispatchProps)(PopularPage)
 const pageSize = 10
 class PopularTab extends Component {
