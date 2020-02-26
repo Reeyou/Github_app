@@ -10,7 +10,6 @@ import NavigationUtil from '../../navigators/NavigationUtil';
 import AboutCommon, { ABOUT_TYPE } from './AboutCommon';
 import config from '../../res/data/config'
 
-const THEME_COLOR = '#678'
 export default class AboutPage extends Component {
   constructor(props) {
     super(props)
@@ -27,8 +26,8 @@ export default class AboutPage extends Component {
     }
   }
   onClick(menu) {
-    console.log(menu)
-    let RouteName, params = {}
+    const {theme} = this.params;
+    let RouteName, params = {theme}
     switch (menu) {
       case MORE_MENU.Tutorial:
         RouteName = 'WebViewPage'
@@ -58,10 +57,10 @@ export default class AboutPage extends Component {
     }
   }
   getItem(menu) {
-    return ViewUtil.getMenuItem(() => this.onClick(menu), menu, THEME_COLOR)
+    const {theme} = this.params;
+    return ViewUtil.getMenuItem(() => this.onClick(menu), menu, theme.themeColor)
   }
   render() {
-
     const content = <View>
       {this.getItem(MORE_MENU.Tutorial)}
       <View style={GlobalStyles.line} />

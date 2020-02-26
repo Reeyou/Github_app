@@ -12,13 +12,14 @@ import MORE_MENU from '../../config/MORE_MENU'
 import GlobalStyles from '../../res/GlobalStyles';
 import ViewUtil from '../../utils/ViewUtil';
 import NavigationUtil from '../../navigators/NavigationUtil';
-import LanguageDao, { FLAG_LANGUAGE } from '../../api/LanguageDao';
+import { FLAG_LANGUAGE } from '../../api/LanguageDao';
+import actions from '../../action'
+import {connect} from 'react-redux'
 
-const THEME_COLOR = '#678'
-export default class UserPage extends Component {
+class UserPage extends Component {
   onClick(menu) {
-    console.log(menu)
-    let RouteName, params = {}
+    const {theme} = this.props;
+    let RouteName, params = {theme}
     switch (menu) {
       case MORE_MENU.Tutorial:
         RouteName = 'WebViewPage'
@@ -46,6 +47,10 @@ export default class UserPage extends Component {
         RouteName = 'SortKeyPage';
         params.flag = FLAG_LANGUAGE.flag_language;
         break;
+      case MORE_MENU.Custom_Theme:
+        const { onShowCustomThemeView } = this.props;
+        onShowCustomThemeView(true);
+        break;
     }
     console.log(RouteName)
     if (RouteName) {
@@ -53,17 +58,19 @@ export default class UserPage extends Component {
     }
   }
   getItem(menu) {
-    return ViewUtil.getMenuItem(() => this.onClick(menu), menu, THEME_COLOR)
+    const {theme} = this.props
+    return ViewUtil.getMenuItem(() => this.onClick(menu), menu, theme.themeColor)
   }
   render() {
+    const {theme} = this.props
     let statuBar = {
-      backgroundColor: THEME_COLOR,
+      backgroundColor: theme.themeColor,
       barStyle: 'light-content'
     }
     let navigationBar = <NavigationBar
       title='我的'
       statuBar={statuBar}
-      style={{ backgroundColor: THEME_COLOR }}
+      style={theme.styles.navBar}
     />
     return (
       <View style={GlobalStyles.root_container}>
@@ -81,7 +88,7 @@ export default class UserPage extends Component {
                 size={40}
                 style={{
                   marginRight: 10,
-                  color: THEME_COLOR
+                  color: theme.themeColor
                 }}
               />
               <Text>Reeyou</Text>
@@ -92,7 +99,7 @@ export default class UserPage extends Component {
               style={{
                 marginRight: 10,
                 alignItems: 'center',
-                color: THEME_COLOR
+                color: theme.themeColor
               }}
             />
           </TouchableOpacity>
@@ -135,6 +142,16 @@ export default class UserPage extends Component {
     )
   }
 }
+const mapStateToProps = state => ({
+  theme: state.theme.theme,
+});
+
+const mapDispatchToProps = dispatch => ({
+  onShowCustomThemeView: (show) => dispatch(actions.onShowCustomThemeView(show)),
+});
+
+//注意：connect只是个function，并不应定非要放在export后面
+export default connect(mapStateToProps, mapDispatchToProps)(UserPage);
 const styles = StyleSheet.create({
   container: {
     flex: 1

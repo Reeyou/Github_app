@@ -1,20 +1,13 @@
 import React,{Component} from 'react'
 import {
   StyleSheet,
-  Text,
-  View,
-  TouchableOpacity
+  View
 } from 'react-native'
 import {WebView} from 'react-native-webview'
 import NavigationBar from '../component/NavigationBar'
 import ViewUtil from '../utils/ViewUtil';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import NavigationUtil from '../navigators/NavigationUtil'
-import ProjectModal from '../modal/projectModal';
-import FavoriteDao from '../api/FavoriteDao'
 
-const TRENDING_URL = 'https://github.com/'
-const THEME_COLOR = '#678'
 export default class WebViewPage extends Component {
   constructor(props) {
     super(props)
@@ -41,9 +34,10 @@ export default class WebViewPage extends Component {
     })
   }
   render() {
+    const {theme} = this.params
     let navigationBar = <NavigationBar
       title={this.state.title}
-      style={{backgroundColor: THEME_COLOR}}
+      style={theme.styles.navBar}
       leftButton={ViewUtil.getLeftBackButton(() => {this.goBack()})}
     />
     return (

@@ -1,7 +1,7 @@
-import { onThemeChange } from './theme'
 import { onLoadPopularData, onLoadPopularMoreData } from './popular'
 import { onRefreshTrending, onLoadTrendingMoreData } from './trending'
 import { onLoadLanguage } from './language'
+import { onThemeChange, onShowCustomThemeView, onThemeInit } from './theme'
 
 export default {
   onThemeChange,
@@ -9,5 +9,8 @@ export default {
   onLoadPopularMoreData,
   onRefreshTrending,
   onLoadTrendingMoreData,
-  onLoadLanguage
+  onLoadLanguage,
+  onThemeChange,
+  onShowCustomThemeView,
+  onThemeInit
 }

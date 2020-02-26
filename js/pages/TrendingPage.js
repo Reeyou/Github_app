@@ -36,7 +36,7 @@ class TrendingPage extends Component {
   }
   _getTabs() {
     const tabs = {}
-    const {keys} = this.props
+    const {keys, theme} = this.props
     this.prevKeys = keys
     keys.forEach((item, index) => {
       if(item.checked) {
@@ -45,6 +45,7 @@ class TrendingPage extends Component {
             {...props}
             timeSpan={this.state.timeSpan}
             tabLable={item.name}
+            theme={theme}
           />,
           navigationOptions: {
             title: item.name
@@ -115,15 +116,15 @@ class TrendingPage extends Component {
     return this.tabNav
   }
   render() {
-    const {keys} = this.props
+    const {keys,theme} = this.props
     let statuBar = {
-      backgroundColor: THEME_COLOR,
+      backgroundColor: theme.themeColor,
       barStyle: 'light-content'
     }
     let navigationBar = <NavigationBar
       titleView={this.renderTitleView()}
       statuBar={statuBar}
-      style={{ backgroundColor: THEME_COLOR }}
+      style={theme.styles.navBar}
     />
     const TabNavigator = keys.length > 0 ? this._tabNav() : null
     return (
@@ -137,7 +138,8 @@ class TrendingPage extends Component {
 }
 
 const mapTrendingStateToProps = state => ({
-  keys: state.language.languages
+  keys: state.language.languages,
+  theme: state.theme.theme
 })
 const mapTrendingDispatchProps = dispatch => ({
   onLoadLanguage: flag => dispatch(actions.onLoadLanguage(flag))
@@ -192,16 +194,16 @@ class TrendingTab extends Component {
   }
   getFetchUrl(key) {
     const URL = `http://github.com/trending/`
-    const QUERY_STR = "?since=daily"
     return URL + key + '?' + this.timeSpan.searchText
 
   }
   renderItem(data) {
     const item = data.item
+    const {theme} = this.props
     return <TrendingItem
       item={item}
       onSelect={() => {
-        NavigationUtil.goPage('DetailPage',{projectModes: item})
+        NavigationUtil.goPage('DetailPage',{projectModes: item,theme})
       }}
     />
   }
@@ -216,6 +218,7 @@ class TrendingTab extends Component {
   }
   render() {
     let store = this.getStore()
+    const {theme} = this.props
     return (
       <View style={styles.container}>
         {/* <Text onPress={() => NavigationUtil.goPage('DetailPage', { navigation: this.props.navigation })}>跳转到详情页</Text>
@@ -227,11 +230,11 @@ class TrendingTab extends Component {
           refreshControl={
             <RefreshControl
               title={'Loading'}
-              titleColor={'red'}
-              colors={['red']}
+              titleColor={theme.themeColor}
+              colors={[theme.themeColor]}
               refreshing={store.isLoading}
               onRefresh={() => this.loadData()}
-              tintColor={'red'}
+              tintColor={theme.themeColor}
             />
           }
           ListFooterComponent={() =>

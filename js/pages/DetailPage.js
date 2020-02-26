@@ -80,6 +80,7 @@ export default class DetailPage extends Component {
     })
   }
   render() {
+    const {theme} = this.params
     let statuBar = {
       backgroundColor: THEME_COLOR,
       barStyle: 'light-content'
@@ -91,7 +92,7 @@ export default class DetailPage extends Component {
       leftButton={ViewUtil.getLeftBackButton(() => this.goBack())}
       rightButton={this.renderRightButton()}
       statuBar={statuBar}
-      style={{backgroundColor: THEME_COLOR}}
+      style={theme.styles.navBar}
     />
     return (
       <View style={styles.container}>
