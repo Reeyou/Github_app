@@ -9,6 +9,7 @@ import NavigationUtil from '../navigators/NavigationUtil'
 import {connect} from 'react-redux';
 import CustomTheme from './CustomTheme';
 import actions from '../action';
+import SafeAreaViewPlus from '../component/SafeAreaViewPlus'
 
 class HomePage extends Component {
   constructor(props) {
@@ -26,12 +27,15 @@ class HomePage extends Component {
   render() {
     // FIX TabNavigator导航页无法跳转到外部导航页问题
     NavigationUtil.navigation = this.props.navigation
+    const {theme} = this.props
     return (
       
-      <View style={{flex: 1}}>
+      <SafeAreaViewPlus
+        topColor={theme.themeColor}
+      >
             <TabNavigator />
             {this.renderCustomThemeView()}
-        </View>
+        </SafeAreaViewPlus>
     )
   }
 }

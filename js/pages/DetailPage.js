@@ -12,6 +12,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import NavigationUtil from '../navigators/NavigationUtil'
 import ProjectModal from '../modal/projectModal';
 import FavoriteDao from '../api/FavoriteDao'
+import SafeAreaViewPlus from '../component/SafeAreaViewPlus'
 
 const TRENDING_URL = 'https://github.com/'
 const THEME_COLOR = '#678'
@@ -95,7 +96,9 @@ export default class DetailPage extends Component {
       style={theme.styles.navBar}
     />
     return (
-      <View style={styles.container}>
+      <SafeAreaViewPlus
+        topColor={theme.themeColor}
+      >
         {navigationBar}
         <WebView
           ref={webView => this.webView = webView}
@@ -103,7 +106,7 @@ export default class DetailPage extends Component {
           onNavigationStateChange={e=>this.onNavigationStateChange(e)}
           source={{uri: this.state.url}}
         />
-      </View>
+      </SafeAreaViewPlus>
     )
   }
 }

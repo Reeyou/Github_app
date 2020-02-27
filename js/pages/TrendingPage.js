@@ -157,7 +157,7 @@ class TrendingTab extends Component {
     this.loadData()
     this.timeSpanChangeListener = DeviceEventEmitter.addListener(TIME_SPAN_CHANGE,timeSpan => {
       this.timeSpan = timeSpan
-      this.loadData()
+      // this.loadData()
     })
   }
   componentWillUnmount() {
@@ -193,8 +193,8 @@ class TrendingTab extends Component {
     return store
   }
   getFetchUrl(key) {
-    const URL = `http://github.com/trending/`
-    return URL + key + '?' + this.timeSpan.searchText
+    // const URL = `http://github.com/trending/`
+    // return URL + key + '?' + this.timeSpan.searchText
 
   }
   renderItem(data) {

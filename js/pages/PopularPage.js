@@ -130,9 +130,9 @@ class PopularTab extends Component {
     return store
   }
   getFetchUrl(key) {
-    const URL = `http://api.github.com/search/repositories?q=`
-    const QUERY_STR = "&sort=stars"
-    return URL + key + QUERY_STR
+    // const URL = `http://api.github.com/search/repositories?q=`
+    // const QUERY_STR = "&sort=stars"
+    // return URL + key + QUERY_STR
 
   }
   renderItem(data) {
@@ -212,8 +212,7 @@ const PopularTabPage = connect(mapStateToProps, mapDispatchToProps)(PopularTab)
 
 const styles = StyleSheet.create({
   tab: {
-    flex: 1,
-    marginTop: DeviceInfo.isIphoneX_deprecated? 30: 0
+    flex: 1
   },
   container: {
     flex: 1,

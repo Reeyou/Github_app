@@ -6,13 +6,14 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  Platform
+  Platform,
+  DeviceInfo
 } from 'react-native'
 
 // 导航栏及状态栏高度
 const NAV_BAR_HEIGHT_IOS = 44;
 const NAV_BAR_HEIGHT_ANDROID = 50;
-const NAV_BAR_HEIGHT = 20;
+const NAV_BAR_HEIGHT = DeviceInfo.isIphoneX_deprecated ? 0 : 20;
 
 // 设置状态栏所接受的属性
 const StatusBarShape = {
