@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native'
 
 const FAVORITE_KEY = 'favorite_'
-export default class Favorite {
+export default class FavoriteDao {
   constructor(flag) {
     this.favoriteKey = FAVORITE_KEY + flag
   }
@@ -25,8 +25,8 @@ export default class Favorite {
    * @param {*} key 
    */
   removeFavoriteItem(key) {
-    AsyncStorage.removeItem(key, (err,resulte) => {
-      if(!err) {
+    AsyncStorage.removeItem(key, (err, resulte) => {
+      if (!err) {
         this.updateFavoriteKeys(key, false)
       }
     })
@@ -40,16 +40,19 @@ export default class Favorite {
   updateFavoriteKeys(key, isAdd) {
     AsyncStorage.getItem(this.favoriteKey, (err, result) => {
       if (!err) {
-        let favoriteKey = JSON.parse(result)
-        let index = favoriteKey.indexOf(key)
+        let favoriteKeys = [];
+        if (result) {
+          favoriteKeys = JSON.parse(result);
+        }
+        let index = favoriteKeys.indexOf(key)
         // 添加 / 删除
         if (isAdd) {
           // 不存在则添加
-          if (index === -1) favoriteKey.push(key)
+          if (index === -1) favoriteKeys.push(key)
         } else {
-          if (index !== -1) favoriteKey.splice(key, 1)
+          if (index !== -1) favoriteKeys.splice(key, 1)
         }
-        AsyncStorage.setItem(this.favoriteKey, JSON.stringify(favoriteKey))
+        AsyncStorage.setItem(this.favoriteKey, JSON.stringify(favoriteKeys))
       }
     })
   }
@@ -59,11 +62,11 @@ export default class Favorite {
    */
   getFavoriteKey() {
     return new Promise((resolve, reject) => {
-      AsyncStorage.getItem(this.favoriteKey, (err,result) => {
-        if(!err) {
+      AsyncStorage.getItem(this.favoriteKey, (err, result) => {
+        if (!err) {
           try {
             resolve(JSON.parse(result))
-          } catch(e) {
+          } catch (e) {
             reject(e)
           }
         } else {
@@ -77,30 +80,30 @@ export default class Favorite {
    * 获取所有收藏项目
    */
   getAllItems() {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       this.getFavoriteKey()
-      .then(keys => {
-        let items = []
-        if(keys) {
-          AsyncStorage.multiGet(keys, (err,stores) => {
-            try {
-              stores.map((result, i, store) => {
-                let key = store[i][0]
-                let value = store[i][1]
-                if(value) items.push(JSON.parse(value))
-              })
-              resolve(items)
-            } catch(e) {
-              reject(e)
-            }
-          })
-        } else {
-          resolve(items)
-        }
-      })
-      .catch(e => {
-        reject(e)
-      })
+        .then(keys => {
+          let items = []
+          if (keys) {
+            AsyncStorage.multiGet(keys, (err, stores) => {
+              try {
+                stores.map((result, i, store) => {
+                  let key = store[i][0]
+                  let value = store[i][1]
+                  if (value) items.push(JSON.parse(value))
+                })
+                resolve(items)
+              } catch (e) {
+                reject(e)
+              }
+            })
+          } else {
+            resolve(items)
+          }
+        })
+        .catch(e => {
+          reject(e)
+        })
     })
   }
 }

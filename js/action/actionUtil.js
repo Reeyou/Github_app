@@ -9,18 +9,18 @@ import Utils from "./Utils";
  * @param {*} data 
  * @param {*} pageSize 
  */
-export function handleData(type, dispatch, storeName, data, pageSize,favoriteDao) {
+export function handleData(type, dispatch, storeName, data, pageSize, favoriteDao) {
   let fixItems = []
-  if(data&&data.data&&data.data) {
-    if(Array.isArray(data.data)) {
+  if (data && data.data && data.data) {
+    if (Array.isArray(data.data)) {
       fixItems = data.data
-    } else if(Array.isArray(data.data.items)) {
+    } else if (Array.isArray(data.data.items)) {
       fixItems = data.data.items
     }
-    
+
   }
-  let showItems = pageSize > fixItems.length ? fixItems : fixItems.slice(0,pageSize)
-  _projectModals(showItems,favoriteDao,projectModals => {
+  let showItems = pageSize > fixItems.length ? fixItems : fixItems.slice(0, pageSize)
+  _projectModals(showItems, favoriteDao, projectModals => {
     dispatch({
       type: type,
       items: fixItems,
@@ -29,21 +29,21 @@ export function handleData(type, dispatch, storeName, data, pageSize,favoriteDao
       pageIndex: 1
     })
   })
-  
+
 }
 
-export async function _projectModals(showItem, favoriteDao,callback) {
+export async function _projectModals(showItem, favoriteDao, callback) {
   let keys = []
- try {
-  keys = await favoriteDao.getFavoriteKeys()
- } catch (error) {
-  console.log(error)
- }
-  let projectModals = []
-  for(let i = 0, len = showItem.length; i < len; i++) {
-    projectModals.push(new ProjectModal(showItem(i),Utils.checkFavorite(showItem(i),keys)))
+  try {
+    keys = await favoriteDao.getFavoriteKey()
+  } catch (error) {
+    console.log(error)
   }
-  if(typeof callback === 'function') {
+  let projectModals = []
+  for (let i = 0, len = showItem.length; i < len; i++) {
+    projectModals.push(new ProjectModal(showItem(i), Utils.checkFavorite(showItem[i], keys)))
+  }
+  if (typeof callback === 'function') {
     callback(projectModals)
   }
 }

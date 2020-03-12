@@ -21,13 +21,15 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import NavigationUtil from '../navigators/NavigationUtil';
 import ArrayUtil from '../utils/ArrayUtil';
 import { FLAG_LANGUAGE } from '../api/LanguageDao';
+import EventBus from 'react-native-event-bus';
+import EventTypes from '../utils/EventTypes';
 
 const THEME_COLOR = '#678'
 const TIME_SPAN_CHANGE = 'TIME_SPAN_CHANGE'
 class TrendingPage extends Component {
   constructor(props) {
     super(props)
-    const {onLoadLanguage } = this.props
+    const { onLoadLanguage } = this.props
     onLoadLanguage(FLAG_LANGUAGE.flag_key)
     this.state = {
       timeSpan: TimeSpans[0]
@@ -36,10 +38,10 @@ class TrendingPage extends Component {
   }
   _getTabs() {
     const tabs = {}
-    const {keys, theme} = this.props
+    const { keys, theme } = this.props
     this.prevKeys = keys
     keys.forEach((item, index) => {
-      if(item.checked) {
+      if (item.checked) {
         tabs[`tab${index}`] = {
           screen: props => <TrendingTabPage
             {...props}
@@ -91,7 +93,10 @@ class TrendingPage extends Component {
   }
 
   _tabNav() {
-    if(!this.tabNav || !ArrayUtil.isEqual(this.prevKeys,this.props.keys)) {
+    const {theme} = this.props;
+        //注意：主题发生变化需要重新渲染top tab
+    if (theme !== this.theme || !this.tabNav || !ArrayUtil.isEqual(this.prevKeys, this.props.keys)) {
+      this.theme = theme;
       this.tabNav = createAppContainer(
         createMaterialTopTabNavigator(
           this._getTabs(),
@@ -116,7 +121,7 @@ class TrendingPage extends Component {
     return this.tabNav
   }
   render() {
-    const {keys,theme} = this.props
+    const { keys, theme } = this.props
     let statuBar = {
       backgroundColor: theme.themeColor,
       barStyle: 'light-content'
@@ -126,11 +131,11 @@ class TrendingPage extends Component {
       statuBar={statuBar}
       style={theme.styles.navBar}
     />
-    const TabNavigator = keys.length > 0 ? this._tabNav() : null
+    const TabNavigator = keys.length ? this._tabNav() : null
     return (
       <View style={styles.tab}>
         {navigationBar}
-        {TabNavigator&&<TabNavigator />}
+        {TabNavigator && <TabNavigator />}
         {this.renderTrendingDialog()}
       </View>
     )
@@ -152,18 +157,29 @@ class TrendingTab extends Component {
     const { tabLable, timeSpan } = this.props
     this.storeName = tabLable
     this.timeSpan = timeSpan
+    this.isFavoriteChanged = false;
   }
   componentDidMount() {
-    this.loadData()
-    this.timeSpanChangeListener = DeviceEventEmitter.addListener(TIME_SPAN_CHANGE,timeSpan => {
+    // this.loadData()
+    this.timeSpanChangeListener = DeviceEventEmitter.addListener(TIME_SPAN_CHANGE, timeSpan => {
       this.timeSpan = timeSpan
       // this.loadData()
-    })
+    });
+    // EventBus.getInstance().addListener(EventTypes.favoriteChanged_trending, this.favoriteChangeListener = () => {
+    //   this.isFavoriteChanged = true;
+    // });
+    // EventBus.getInstance().addListener(EventTypes.bottom_tab_select, this.bottomTabSelectListener = (data) => {
+    //   if (data.to === 1 && this.isFavoriteChanged) {
+    //     this.loadData(null, true);
+    //   }
+    // });
   }
   componentWillUnmount() {
-    if(this.timeSpanChangeListener) {
+    if (this.timeSpanChangeListener) {
       this.timeSpanChangeListener.remove()
     }
+    // EventBus.getInstance().removeListener(this.favoriteChangeListener);
+    // EventBus.getInstance().removeListener(this.bottomTabSelectListener);
   }
   loadData(loadMore) {
     const { onRefreshTrending, onLoadTrendingMoreData } = this.props
@@ -199,11 +215,11 @@ class TrendingTab extends Component {
   }
   renderItem(data) {
     const item = data.item
-    const {theme} = this.props
+    const { theme } = this.props
     return <TrendingItem
       item={item}
       onSelect={() => {
-        NavigationUtil.goPage('DetailPage',{projectModes: item,theme})
+        NavigationUtil.goPage('DetailPage', { projectModes: item, theme })
       }}
     />
   }
@@ -218,7 +234,7 @@ class TrendingTab extends Component {
   }
   render() {
     let store = this.getStore()
-    const {theme} = this.props
+    const { theme } = this.props
     return (
       <View style={styles.container}>
         {/* <Text onPress={() => NavigationUtil.goPage('DetailPage', { navigation: this.props.navigation })}>跳转到详情页</Text>
