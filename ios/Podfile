@@ -40,6 +40,8 @@ target 'Githubapp' do
 
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
+  pod 'CodePush', :path => '../node_modules/react-native-code-push'
+
   target 'GithubappTests' do
     inherit! :search_paths
     # Pods for testing

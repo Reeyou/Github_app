@@ -40,8 +40,6 @@ class TrendingPage extends Component {
   _getTabs() {
     const tabs = {}
     const { keys, theme } = this.props
-    console.log("===============")
-    console.log(keys)
     this.prevKeys = keys
     keys.forEach((item, index) => {
       if (item.checked) {

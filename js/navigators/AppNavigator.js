@@ -8,6 +8,7 @@ import AboutPage from '../pages/About/AboutPage'
 import AboutMePage from '../pages/About/AboutMePage'
 import CustomKeyPage from '../pages/CustomKeyPage'
 import SortKeyPage from '../pages/SortKeyPage'
+import CodePushPage from '../pages/CodePushPage'
 
 const InitNavigator = createStackNavigator(
   {
@@ -63,7 +64,13 @@ const MainNavigator = createStackNavigator(
       navigationOptions: {
         header: null
       }
-    }
+    },
+    CodePushPage: {
+      screen: CodePushPage, 
+      navigationOptions: {
+        header: null
+      }
+    },
   }
 )
 

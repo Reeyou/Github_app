@@ -53,7 +53,7 @@ class PopularPage extends Component {
       barStyle: 'light-content'
     }
     let navigationBar = <NavigationBar
-      title='最热'
+      title='最热123ryy'
       statusBar={statusBar}
       style={theme.styles.navBar}
     />
@@ -104,9 +104,9 @@ class PopularTab extends Component {
   }
   componentDidMount() {
     this.loadData();
-    EventBus.getInstance().addListener(EventTypes.favorite_changed_popular, this.favoriteChangeListener = () => {
-      this.isFavoriteChanged = true;
-    });
+    // EventBus.getInstance().addListener(EventTypes.favorite_changed_popular, this.favoriteChangeListener = () => {
+    //   this.isFavoriteChanged = true;
+    // });
     // EventBus.getInstance().addListener(EventTypes.bottom_tab_select, this.bottomTabSelectListener = (data) => {
     //   if (data.to === 0 && this.isFavoriteChanged) {
     //     this.loadData(null, true);
@@ -115,8 +115,8 @@ class PopularTab extends Component {
   }
 
   componentWillUnmount() {
-    EventBus.getInstance().removeListener(this.favoriteChangeListener);
-    EventBus.getInstance().removeListener(this.bottomTabSelectListener);
+    // EventBus.getInstance().removeListener(this.favoriteChangeListener);
+    // EventBus.getInstance().removeListener(this.bottomTabSelectListener);
   }
   loadData(loadMore) {
     const { onLoadPopularData, onLoadPopularMoreData } = this.props

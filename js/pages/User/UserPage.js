@@ -14,12 +14,12 @@ import ViewUtil from '../../utils/ViewUtil';
 import NavigationUtil from '../../navigators/NavigationUtil';
 import { FLAG_LANGUAGE } from '../../api/LanguageDao';
 import actions from '../../action'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 class UserPage extends Component {
   onClick(menu) {
-    const {theme} = this.props;
-    let RouteName, params = {theme}
+    const { theme } = this.props;
+    let RouteName, params = { theme }
     switch (menu) {
       case MORE_MENU.Tutorial:
         RouteName = 'WebViewPage'
@@ -38,6 +38,9 @@ class UserPage extends Component {
         RouteName = 'CustomKeyPage';
         params.isRemoveKey = menu === MORE_MENU.Remove_Key;
         params.flag = menu !== MORE_MENU.Custom_Language ? FLAG_LANGUAGE.flag_key : FLAG_LANGUAGE.flag_language;
+        break;
+      case MORE_MENU.CodePush:
+        RouteName = 'CodePushPage' 
         break;
       case MORE_MENU.Sort_Key:
         RouteName = 'SortKeyPage'
@@ -58,11 +61,11 @@ class UserPage extends Component {
     }
   }
   getItem(menu) {
-    const {theme} = this.props
+    const { theme } = this.props
     return ViewUtil.getMenuItem(() => this.onClick(menu), menu, theme.themeColor)
   }
   render() {
-    const {theme} = this.props
+    const { theme } = this.props
     let statuBar = {
       backgroundColor: theme.themeColor,
       barStyle: 'light-content'
