@@ -17,7 +17,6 @@ export function onLoadPopularData(storeName, url, pageSize, favoriteDao) {
     dataStore.fetchData(url,FLAG_STORAGE.flag_popular)
       .then(data => {
         handleData(TYPES.POPULAR_REFRESH_SUCCESS,dispatch, storeName, data, pageSize,favoriteDao)
-        console.log(data)
       })
       .catch(err => {
         console.log(err)

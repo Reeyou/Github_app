@@ -23,6 +23,7 @@ import EventBus from "react-native-event-bus";
 import EventTypes from "../utils/EventTypes";
 
 
+
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular)
 class PopularPage extends Component {
   constructor(props) {
@@ -128,7 +129,7 @@ class PopularTab extends Component {
         this.refs.toast.show('没有更多了')
       })
     } else {
-      onLoadPopularData(this.storeName, url, favoriteDao)
+      onLoadPopularData(this.storeName, url, pageSize, favoriteDao)
     }
 
   }
@@ -139,7 +140,7 @@ class PopularTab extends Component {
       store = {
         items: [],
         isLoading: false,
-        projectModes: [],
+        projectModels: [],
         hideLoadingMore: true
       }
     }
@@ -182,7 +183,7 @@ class PopularTab extends Component {
         {/* <Text onPress={() => NavigationUtil.goPage('DetailPage', { navigation: this.props.navigation })}>跳转到详情页</Text>
         <Text onPress={() => NavigationUtil.goPage('FetchPage', { navigation: this.props.navigation })}>Fetch使用</Text> */}
         <FlatList
-          data={store.projectModes}
+          data={store.projectModels}
           renderItem={data => this.renderItem(data)}
           keyExtractor={item => "" + item.item.id}
           refreshControl={

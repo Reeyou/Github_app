@@ -126,8 +126,8 @@ class FavoriteTab extends Component {
         return store;
     }
 
-    onFavorite(item, isFavorite) {
-        FavoriteUtil.onFavorite(this.favoriteDao, item, isFavorite, this.props.flag);
+    onFavorite(item) {
+        FavoriteUtil.onFavorite(this.favoriteDao, item, item.isFavorite, this.props.flag);
         if (this.storeName === FLAG_STORAGE.flag_popular) {
             EventBus.getInstance().fireEvent(EventTypes.favorite_changed_popular);
         } else {
@@ -141,7 +141,7 @@ class FavoriteTab extends Component {
         const Item = this.storeName === FLAG_STORAGE.flag_popular ? PopularItem : TrendingItem;
         return <Item
             theme={theme}
-            projectModel={item}
+            projectModal={item}
             onSelect={(callback) => {
                 NavigationUtil.goPage({
                     theme,
@@ -150,7 +150,7 @@ class FavoriteTab extends Component {
                     callback,
                 }, 'DetailPage');
             }}
-            onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
+            onFavorite={(item) => this.onFavorite(item)}
         />;
     }
 

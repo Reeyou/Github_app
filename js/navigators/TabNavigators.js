@@ -9,6 +9,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { connect } from 'react-redux'
+import EventTypes from '../utils/EventTypes';
+import EventBus from 'react-native-event-bus'
 
 const TABS =
 {
@@ -72,7 +74,7 @@ class TabNavigators extends Component {
   }
 
   _tabNavigator() {
-    if(this.Tabs) {
+    if (this.Tabs) {
       return this.Tabs
     }
 
@@ -85,7 +87,7 @@ class TabNavigators extends Component {
         TABS,
         {
           tabBarComponent: props => {
-            return <TabBarComponent {...props} theme={this.props.theme}/>
+            return <TabBarComponent {...props} theme={this.props.theme} />
           }
         }
       )
@@ -94,7 +96,14 @@ class TabNavigators extends Component {
 
   render() {
     const TAB = this._tabNavigator()
-    return <TAB />
+    return <TAB
+      onNavigationStateChange={(prevState, newState, action) => {
+        EventBus.getInstance().fireEvent(EventTypes.bottom_tab_select, {//发送底部tab切换的事件
+          from: prevState.index,
+          to: newState.index
+        })
+      }}
+    />
   }
 }
 
@@ -104,9 +113,9 @@ class TabBarComponent extends Component {
   }
   render() {
     return <BottomTabBar
-              {...this.props}
-              activeTintColor={this.props.theme.themeColor}
-            />
+      {...this.props}
+      activeTintColor={this.props.theme.themeColor}
+    />
   }
 }
 
