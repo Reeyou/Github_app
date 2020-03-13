@@ -48,13 +48,13 @@ class PopularPage extends Component {
   }
   render() {
     const { keys, theme } = this.props
-    let statuBar = {
+    let statusBar = {
       backgroundColor: theme.themeColor,
       barStyle: 'light-content'
     }
     let navigationBar = <NavigationBar
       title='最热'
-      statuBar={statuBar}
+      statusBar={statusBar}
       style={theme.styles.navBar}
     />
     const TabNavigator = keys.length > 0 ? createAppContainer(
@@ -67,7 +67,7 @@ class PopularPage extends Component {
             scrollEnabled: true,
             style: {
               backgroundColor: theme.themeColor,
-              height: 50
+              // height: 50
             },
             indicatorStyle: {
               height: 2,

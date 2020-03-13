@@ -12,8 +12,9 @@ import {
 
 // 导航栏及状态栏高度
 const NAV_BAR_HEIGHT_IOS = 44;
-const NAV_BAR_HEIGHT_ANDROID = 50;
-const NAV_BAR_HEIGHT = DeviceInfo.isIphoneX_deprecated ? 0 : 20;
+const NAV_BAR_HEIGHT_ANDROID = 40;
+const NAV_BAR_HEIGHT = Platform.OS === 'ios' ? NAV_BAR_HEIGHT_IOS : NAV_BAR_HEIGHT_ANDROID;
+const STATUS_BAR_HEIGHT = (Platform.OS !== 'ios' || DeviceInfo.isIPhoneX_deprecated) ? 0 : 20;//状态栏的高度
 
 // 设置状态栏所接受的属性
 const StatusBarShape = {
@@ -48,6 +49,7 @@ export default class NavigationBar extends Component {
     let statusBar = !this.props.statusBar.hidden ?
       <View style={styles.statusBar}>
         <StatusBar {...this.props.statusBar} />
+        {/* <StatusBar hidden={false} backgroundColor={'green'} /> */}
       </View> : null;
 
     let titleView = this.props.titleView ? this.props.titleView :
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: Platform.OS === 'ios' ? NAV_BAR_HEIGHT_IOS : NAV_BAR_HEIGHT_ANDROID
+    height: NAV_BAR_HEIGHT
   },
   navBarTitleContainer: {
     alignItems: 'center',
@@ -104,6 +106,6 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   statusBar: {
-    height: Platform.OS === 'ios' ? NAV_BAR_HEIGHT : 0
+    height: STATUS_BAR_HEIGHT
   }
 })

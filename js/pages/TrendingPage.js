@@ -21,6 +21,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import NavigationUtil from '../navigators/NavigationUtil';
 import ArrayUtil from '../utils/ArrayUtil';
 import { FLAG_LANGUAGE } from '../api/LanguageDao';
+import FavoriteUtil from '../utils/favoriteUtil';
 import EventBus from 'react-native-event-bus';
 import EventTypes from '../utils/EventTypes';
 
@@ -29,8 +30,8 @@ const TIME_SPAN_CHANGE = 'TIME_SPAN_CHANGE'
 class TrendingPage extends Component {
   constructor(props) {
     super(props)
-    const { onLoadLanguage } = this.props
-    onLoadLanguage(FLAG_LANGUAGE.flag_key)
+    const { loadLanguage } = this.props
+    loadLanguage(FLAG_LANGUAGE.flag_language)
     this.state = {
       timeSpan: TimeSpans[0]
     }
@@ -108,7 +109,7 @@ class TrendingPage extends Component {
               upperCaseLabel: false,
               scrollEnabled: true,
               style: {
-                backgroundColor: '#a67'
+                backgroundColor: theme.themeColor
               },
               indicatorStyle: {
                 height: 2,
@@ -149,7 +150,7 @@ const mapTrendingStateToProps = state => ({
   theme: state.theme.theme
 })
 const mapTrendingDispatchProps = dispatch => ({
-  onLoadLanguage: flag => dispatch(actions.onLoadLanguage(flag))
+  loadLanguage: flag => dispatch(actions.onLoadLanguage(flag))
 })
 export default connect(mapTrendingStateToProps, mapTrendingDispatchProps)(TrendingPage)
 const pageSize = 10
@@ -223,6 +224,7 @@ class TrendingTab extends Component {
       onSelect={() => {
         NavigationUtil.goPage('DetailPage', { projectModes: item, theme })
       }}
+      onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_trending)}
     />
   }
   genIndicator() {
